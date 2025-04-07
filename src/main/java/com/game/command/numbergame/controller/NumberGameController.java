@@ -1,0 +1,24 @@
+package com.game.command.numbergame.controller;
+
+import com.game.command.numbergame.generator.NumberGenerator;
+import com.game.command.numbergame.generator.NumberGeneratorFactory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+public class NumberGameController {
+
+    private final NumberGeneratorFactory numberGeneratorFactory;
+
+    @GetMapping("/number/{level}")
+    public ResponseEntity<Integer> generateNumber(@PathVariable String level) {
+        NumberGenerator numberGenerator = numberGeneratorFactory.getLevel(level);
+        int number = numberGenerator.generateNumber();
+        return ResponseEntity.ok(number);
+    }
+
+}
