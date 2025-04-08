@@ -30,6 +30,7 @@ public class LogFilter implements Filter {
                 chain.doFilter(request, response);
                 return;
             }
+
             String requestUri = generateMessage(req);
             log.info(requestUri);
             timeLogTemplate.execute(
@@ -47,18 +48,21 @@ public class LogFilter implements Filter {
 
     private String generateMessage(HttpServletRequest req) {
         Map<String, String[]> parameterMap = req.getParameterMap();
+
         StringBuilder message = new StringBuilder();
         message.append("[REQUEST] ")
                 .append(req.getMethod())
                 .append(" ")
                 .append(req.getRequestURI())
                 .append("?");
+
         for (String key : parameterMap.keySet()) {
             message.append(key)
                     .append("=")
                     .append(Arrays.toString(parameterMap.get(key)))
                     .append("&");
         }
+
         return message.toString();
     }
 }
