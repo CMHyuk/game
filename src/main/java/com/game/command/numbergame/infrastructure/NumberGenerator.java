@@ -1,4 +1,4 @@
-package com.game.command.numbergame.generator;
+package com.game.command.numbergame.infrastructure;
 
 public interface NumberGenerator {
     int generateNumber();

@@ -1,20 +1,20 @@
-package com.game.command.numbergame.generator;
+package com.game.command.numbergame.infrastructure;
 
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 @Component
-public class NormalModeNumberGenerator implements NumberGenerator {
+public class EasyModeNumberGenerator implements NumberGenerator {
 
     @Override
     public int generateNumber() {
-        return ThreadLocalRandom.current().nextInt(1, 101);
+        return ThreadLocalRandom.current().nextInt(1, 51);
     }
 
     @Override
     public String getLevel() {
-        return "normal";
+        return "easy";
     }
 
 }
