@@ -1,4 +1,4 @@
-package com.game.command.numbergame.infrastructure;
+package com.game.command.numbergame.exception;
 
 import com.game.common.exception.ErrorCode;
 import lombok.AccessLevel;
