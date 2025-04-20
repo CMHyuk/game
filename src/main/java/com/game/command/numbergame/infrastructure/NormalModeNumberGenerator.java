@@ -7,9 +7,12 @@ import java.util.concurrent.ThreadLocalRandom;
 @Component
 public class NormalModeNumberGenerator implements NumberGenerator {
 
+    private static final int MIN_NUMBER = 1;
+    private static final int MAX_NUMBER = 100;
+
     @Override
     public int generateNumber() {
-        return ThreadLocalRandom.current().nextInt(1, 101);
+        return ThreadLocalRandom.current().nextInt(MIN_NUMBER, MAX_NUMBER + 1);
     }
 
     @Override
