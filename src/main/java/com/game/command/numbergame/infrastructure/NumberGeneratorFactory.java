@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.game.command.numbergame.infrastructure.NumberGameException.NOT_EXISTS_PROVIDER;
+import static com.game.command.numbergame.exception.NumberGameException.NOT_EXISTS_PROVIDER;
 import static java.util.stream.Collectors.toMap;
 
 @Component
