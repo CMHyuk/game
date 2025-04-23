@@ -108,23 +108,22 @@
     const form = document.getElementById('guessForm');
     const input = document.getElementById('guessInput');
     const message = document.getElementById('message');
-    const button = form.querySelector('button'); // 버튼
+    const button = form.querySelector('button');
 
-    const answer = /*[[${number}]]*/ 0;
     const level = /*[[${level}]]*/ 'easy';
 
-    let startTime = Date.now(); // 게임 시작 시간을 기록
-    let attemptCount = 0; // 시도 횟수
+    let startTime = Date.now(); // 게임 시작 시간
+    let attemptCount = 0;       // 시도 횟수
 
-    // 게임 시작 시점
     function startGame() {
-        startTime = Date.now(); // 게임이 시작되면 시간을 초기화
-        attemptCount = 0; // 시도 횟수 초기화
-        message.textContent = ''; // 메시지 초기화
-        message.className = ''; // 메시지 스타일 초기화
-        input.value = ''; // 입력란 초기화
-        input.disabled = false; // 입력란 활성화
-        button.textContent = "제출"; // 버튼 텍스트 초기화
+        startTime = Date.now();
+        attemptCount = 0;
+        message.textContent = '';
+        message.className = '';
+        input.value = '';
+        input.disabled = false;
+        button.textContent = "제출";
+        button.onclick = null;
     }
 
     form.addEventListener('submit', function (e) {
@@ -137,58 +136,52 @@
             return;
         }
 
-        // 시도 횟수 증가
         attemptCount++;
+        const currentTime = Date.now();
+        const elapsedTime = Number((currentTime - startTime) / 1000).toFixed(2);
 
-        const currentTime = Date.now(); // 현재 시간
-        const elapsedTime = Number((currentTime - startTime) / 1000).toFixed(2); // 걸린 시간(초 단위)
+        const gameResult = {
+            inputNumber: guess,
+            attemptCount: attemptCount,
+            elapsedTime: elapsedTime,
+            level: level
+        };
 
-        if (guess === answer) {
-            message.innerHTML = `정답입니다! <br>걸린 시간: ${elapsedTime}초<br>시도 횟수: ${attemptCount}번`;
-            message.className = 'message correct';
-
-            // 정답을 맞춘 경우
-            input.style.display = 'none';   // 입력창 숨기기
-
-            button.textContent = "홈으로 이동";
-            button.onclick = function () {
-                window.location.href = '/game/home';
-            };
-
-            // 게임 결과를 서버로 전송
-            const gameResult = {
-                attemptCount: attemptCount,
-                elapsedTime: elapsedTime,
-                level: level
-            };
-
-            // 서버로 POST 요청
-            fetch('/game/result', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(gameResult)
+        fetch('/game/result', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(gameResult)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(msg => { throw new Error(msg); });
+                }
+                return response;
             })
-                .then(response => response.json())  // 응답을 JSON으로 처리
-                .then(data => {
-                    console.log('게임 결과 저장 완료:', data);
-                })
-                .catch(error => {
-                    console.error('게임 결과 저장 실패:', error);
-                });
-        } else if (guess < answer) {
-            message.textContent = '더 큰 숫자예요!';
-            message.className = 'message wrong too-big';
-        } else {
-            message.textContent = '더 작은 숫자예요!';
-            message.className = 'message wrong too-small';
-        }
+            .then(() => {
+                message.innerHTML = `정답입니다! <br>걸린 시간: ${elapsedTime}초<br>시도 횟수: ${attemptCount}번`;
+                message.className = 'message correct';
 
-        input.value = ''; // 입력란 초기화
+                input.style.display = 'none';
+                button.textContent = "홈으로 이동";
+                button.onclick = () => window.location.href = '/game/home';
+            })
+            .catch(error => {
+                message.textContent = error.message;
+                message.className = 'message wrong';
+
+                if (error.message.includes('작습니다')) {
+                    message.classList.add('too-small');
+                } else if (error.message.includes('큽니다')) {
+                    message.classList.add('too-big');
+                }
+            });
+
+        input.value = '';
     });
 
-    // 게임 시작
     startGame();
 </script>
 </body>
