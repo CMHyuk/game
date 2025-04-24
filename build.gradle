@@ -37,6 +37,8 @@ dependencies {
 
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.session:spring-session-data-redis'
 
     compileOnly 'org.projectlombok:lombok'
 
