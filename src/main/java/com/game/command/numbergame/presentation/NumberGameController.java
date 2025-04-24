@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class NumberGameController {
 
-    private final NumberGeneratorFactory numberGeneratorFactory;
     private final NumberStatisticsService numberStatisticsService;
+    private final NumberGeneratorFactory numberGeneratorFactory;
     private final NumberValidator numberValidator;
     private final RecordService recordService;
 
