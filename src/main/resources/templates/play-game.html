@@ -169,15 +169,20 @@
                 button.onclick = () => window.location.href = '/game/home';
             })
             .catch(error => {
-                message.textContent = error.message;
+                const rawMessage = error.message;
+                const cleanedMessage = rawMessage.replace(/^.*?:\s*/, '');
+
+                message.textContent = cleanedMessage;
                 message.className = 'message wrong';
 
-                if (error.message.includes('작습니다')) {
-                    message.classList.add('too-small');
-                } else if (error.message.includes('큽니다')) {
-                    message.classList.add('too-big');
+                if (cleanedMessage.includes('입력 숫자보다 작습니다.')) {
+                    message.innerText = '입력 숫자보다 작습니다.'
+
+                } else if (cleanedMessage.includes('입력 숫자보다 큽니다.')) {
+                    message.innerText = '입력 숫자보다 큽니다.'
                 }
             });
+
 
         input.value = '';
     });
