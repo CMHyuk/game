@@ -27,7 +27,7 @@ public class NumberGameController {
         return "home";
     }
 
-    @GetMapping("/number/{level}")
+    @GetMapping("/{level}")
     public String startGame(@PathVariable String level, HttpSession session, Model model) {
         NumberGenerator numberGenerator = numberGeneratorFactory.getLevel(level);
         int number = numberGenerator.generateNumber();

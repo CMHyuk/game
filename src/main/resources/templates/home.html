@@ -91,9 +91,9 @@
 </div>
 
 <script>
-    function startGame(difficulty) {
-        // 경로 이동: /number/easy, /number/normal, /number/hard
-        location.href = `/game/number/${difficulty}`;
+    function startGame(level) {
+        // 경로 이동: /easy, /normal, /hard
+        location.href = `/game/${level}`;
     }
 </script>
 </body>
