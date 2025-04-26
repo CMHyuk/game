@@ -31,7 +31,7 @@ public class NumberGameController {
     public String startGame(@PathVariable String level, HttpSession session, Model model) {
         NumberGenerator numberGenerator = numberGeneratorFactory.getLevel(level);
         int number = numberGenerator.generateNumber();
-        numberStatisticsService.save(number);
+        numberStatisticsService.save(level, number);
 
         session.setAttribute("answer", number);
         model.addAttribute("level", level);
