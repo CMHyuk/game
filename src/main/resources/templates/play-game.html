@@ -54,6 +54,7 @@
         }
 
         button {
+            margin-bottom: 1.5rem;
             padding: 0.8rem 2rem;
             font-size: 1rem;
             background-color: #ff9800;
@@ -74,20 +75,37 @@
             font-size: 1.1rem;
         }
 
+        /* 상태별 스타일 */
         .correct {
             color: #00e676;
         }
 
         .wrong {
-            color: #ff5252;
+            color: #ff1744;
+            font-size: 1.3rem;
         }
 
         .too-big {
-            color: #ff5722; /* 붉은 색 */
+            color: #d50000;
+            font-size: 1.2rem;
         }
 
         .too-small {
-            color: #2196f3; /* 파란 색 */
+            color: #2962ff;
+            font-size: 1.2rem;
+        }
+
+        /* 흔들리는 효과를 따로 분리 */
+        .shake {
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
         }
     </style>
 </head>
@@ -112,8 +130,17 @@
 
     const level = /*[[${level}]]*/ 'easy';
 
-    let startTime = Date.now(); // 게임 시작 시간
-    let attemptCount = 0;       // 시도 횟수
+    let startTime = Date.now();
+    let attemptCount = 0;
+
+    function triggerAnimation(element, animationName) {
+        element.classList.remove(animationName);
+        void element.offsetWidth;
+        void element.offsetHeight;
+        setTimeout(() => {
+            element.classList.add(animationName);
+        }, 0);
+    }
 
     function startGame() {
         startTime = Date.now();
@@ -133,6 +160,7 @@
         if (isNaN(guess)) {
             message.textContent = '숫자를 입력해주세요!';
             message.className = 'message wrong';
+            triggerAnimation(message, 'shake');
             return;
         }
 
@@ -163,7 +191,6 @@
             .then(() => {
                 message.innerHTML = `정답입니다! <br>걸린 시간: ${elapsedTime}초<br>시도 횟수: ${attemptCount}번`;
                 message.className = 'message correct';
-
                 input.style.display = 'none';
                 button.textContent = "홈으로 이동";
                 button.onclick = () => window.location.href = '/game/home';
@@ -172,17 +199,21 @@
                 const rawMessage = error.message;
                 const cleanedMessage = rawMessage.replace(/^.*?:\s*/, '');
 
-                message.textContent = cleanedMessage;
-                message.className = 'message wrong';
-
                 if (cleanedMessage.includes('입력 숫자보다 작습니다.')) {
-                    message.innerText = '입력 숫자보다 작습니다.'
-
+                    message.innerText = '입력 숫자보다 작습니다.';
                 } else if (cleanedMessage.includes('입력 숫자보다 큽니다.')) {
-                    message.innerText = '입력 숫자보다 큽니다.'
+                    message.innerText = '입력 숫자보다 큽니다.';
+                } else {
+                    message.textContent = cleanedMessage;
                 }
-            });
 
+                // 기존 class 초기화 후 wrong 추가
+                message.classList.remove('correct');
+                message.classList.add('wrong');
+
+                // 흔들리는 애니메이션 실행
+                triggerAnimation(message, 'shake');
+            });
 
         input.value = '';
     });

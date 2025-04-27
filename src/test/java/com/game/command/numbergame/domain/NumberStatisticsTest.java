@@ -8,10 +8,11 @@ class NumberStatisticsTest {
     @Test
     void 숫자를_증가시킨다() {
         // given
+        String level = "easy";
         int number = 20;
         int frequency = 1;
 
-        NumberStatistics numberStatistics = new NumberStatistics(number, frequency);
+        NumberStatistics numberStatistics = new NumberStatistics(Level.from(level), number, frequency);
 
         // when
         numberStatistics.increaseFrequency();

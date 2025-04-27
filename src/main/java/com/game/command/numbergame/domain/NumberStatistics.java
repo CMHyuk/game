@@ -1,10 +1,7 @@
 package com.game.command.numbergame.domain;
 
 import com.game.common.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +15,13 @@ public class NumberStatistics extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private Level level;
     private int number;
     private int frequency;
 
-    public NumberStatistics(int number, int frequency) {
+    public NumberStatistics(Level level, int number, int frequency) {
+        this.level = level;
         this.number = number;
         this.frequency = frequency;
     }
