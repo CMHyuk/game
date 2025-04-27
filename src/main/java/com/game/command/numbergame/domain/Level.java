@@ -10,6 +10,7 @@ import static com.game.command.numbergame.exception.NumberGameException.NOT_EXIS
 
 @Getter
 public enum Level {
+
     EASY("easy"), NORMAL("normal"), HARD("hard");
 
     private final String level;
