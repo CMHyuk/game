@@ -17,7 +17,7 @@ public class NumberStatisticsQueryViewController {
     private final NumberStatisticsQueryService numberStatisticsQueryService;
 
     @GetMapping("/number-statistics/{level}")
-    public String getGameRank(@PathVariable String level, Model model) {
+    public String getNumberStatistics(@PathVariable String level, Model model) {
         List<NumberStatisticsResponse> numberStatistics = numberStatisticsQueryService.findByLevel(level);
 
         model.addAttribute("level", level);
