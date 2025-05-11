@@ -38,6 +38,7 @@ class NumberStatisticsQueryServiceTest {
         List<NumberStatisticsResponse> actual = numberStatisticsQueryService.findByLevel(level);
 
         // then
+        assertThat(actual).hasSize(1);
         actual.forEach(response -> {
             assertThat(response.number()).isEqualTo(number);
             assertThat(response.frequency()).isEqualTo(frequency);
